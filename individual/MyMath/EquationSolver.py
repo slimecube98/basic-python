@@ -1,3 +1,4 @@
+from MyMath.Matrix import Matrix
 
 class EquationSolver:
     def __init__(self, a, b, c = None):
@@ -41,3 +42,12 @@ class EquationSolver:
         x2 = (-b - discriminant**0.5) / (2*a)
 
         return x1, x2
+    
+    def solve_gauss(self, equation1, equation2):
+        matrix = Matrix([
+            [self._a, self._b, self._c],
+            [equation1._a, equation1._b, equation1._c],
+            [equation2._a, equation2._b, equation2._c]
+        ])
+
+        return matrix.gauss_equation()

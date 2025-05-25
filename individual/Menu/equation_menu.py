@@ -2,10 +2,21 @@ import os
 
 from MyMath.EquationSolver import EquationSolver
 
+def create_equation():
+    print('Введите коэффициенты уравнения ax + b = 0')
+    a = float(input('a: '))
+    b = float(input('b: '))
+    return EquationSolver(a, b)
+
+def create_quadratic_equation():
+    print('Введите коэффициенты уравнения ax^2 + bx + c = 0')
+    a = float(input('a: '))
+    b = float(input('b: '))
+    c = float(input('c: '))
+    return EquationSolver(a, b, c)
 
 def matrices_menu():
         run = True
-        solver = EquationSolver()
         while run:
             try:
                 os.system('cls' if os.name == 'nt' else 'clear')
@@ -19,28 +30,25 @@ def matrices_menu():
 
                 match choice:
                     case 1:
-                        print('Введите коэффициенты уравнения ax + b = 0')
-                        a = float(input('a: '))
-                        b = float(input('b: '))
-                        equation = EquationSolver(a, b)
-                        print('Уравнение:', equation)
+                        equation = create_equation()
                         result = equation.solve()
-                        # result = solver.solve_linear(a, b)
-                        # print(f'Решение уравнения {a}x + {b} = 0: x = {result}')
+                        print(f'Решение уравнения {equation}: x = {result}')
                     case 2:
-                        print('Введите коэффициенты уравнения ax^2 + bx + c = 0')
-                        a = float(input('a: '))
-                        b = float(input('b: '))
-                        c = float(input('c: '))
-                        result = solver.solve_quadratic(a, b, c)
-                        print(f'Решение уравнения {a}x^2 + {b}x + {c} = 0: x1 = {result[0]}, x2 = {result[1]}')
+                        equation = create_quadratic_equation()
+                        x1, x2 = equation.solve()
+                        print(f'Решение уравнения {equation}: x1 = {x1}, x2 = {x2}')
                     case 3:
-                        print('Вычитание матриц:', matrix1, ' - ' , matrix2)
-                        print('Результат:', matrix1 - matrix2)
+                        # we need 3 quadratic equations to solve a system of linear equations
+                        print('Введите коэффициенты для системы линейных уравнений:')
+                        eq1 = create_quadratic_equation()
+                        eq2 = create_quadratic_equation()
+                        eq3 = create_quadratic_equation()
+                        
+                        result = eq1.solve_gauss(eq2, eq3)
+                        print(f'Решение системы уравнений:\n{eq1}\n{eq2}\n{eq3}\nРезультат: {result}')
+
                     case 0:
                         run = False
-                        if 'matrix1' in locals(): del matrix1
-                        if 'matrix2' in locals(): del matrix2
                         print('Возврат в главное меню')
                     case _:
                         print('Некорректный ввод, попробуйте еще раз')
